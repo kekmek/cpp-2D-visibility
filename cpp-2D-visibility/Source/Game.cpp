@@ -6,12 +6,17 @@
 const int boundary_width = 10;
 
 void PixelGameEngine::StartGame() {
-    sf::RenderWindow window(sf::VideoMode(1024, 768), "");
+    
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 8;
 
-    //window.setVerticalSyncEnabled(true);
+    sf::RenderWindow window(sf::VideoMode(1920, 1080), "", sf::Style::Default, settings);
+    
+    window.setVerticalSyncEnabled(true);
     
     while(window.isOpen()) {
-
+        PixelGameEngine::DrawMap(window);
+        PixelGameEngine::DrawHero(window);
         sf::Event event;
 
         while (window.pollEvent(event)) {
@@ -26,8 +31,10 @@ void PixelGameEngine::StartGame() {
             }
 
         }
+
         
-        PixelGameEngine::DrawMap(window);
+        window.display();
+        window.clear();
     }
 
 }
@@ -51,6 +58,7 @@ void PixelGameEngine::DrawBoundary(sf::RenderWindow& window) {
     boundary.at(1).setPosition(window.getSize().x - boundary_width, 0);
     PixelGameEngine::DrawRectangles(window, boundary.at(0));
     PixelGameEngine::DrawRectangles(window, boundary.at(1));
+
 }
 
 void PixelGameEngine::DrawRectangles(sf::RenderWindow& window, const double pos_x, const double pos_y, 
@@ -59,10 +67,29 @@ void PixelGameEngine::DrawRectangles(sf::RenderWindow& window, const double pos_
     rectangle.setPosition(pos_x, pos_y);
     
     window.draw(rectangle);
-    window.display();
+    
 }
 
 void PixelGameEngine::DrawRectangles(sf::RenderWindow& window, sf::RectangleShape& rectangle) {
+    //window.clear();
     window.draw(rectangle);
-    window.display();
+    
+}
+
+void PixelGameEngine::DrawHero(sf::RenderWindow& window) {
+    sf::Texture texture;
+     if(!texture.loadFromFile("./Images/light.png")) {
+        window.close();
+        return;
+    }
+
+    texture.setSmooth(true);
+    sf::CircleShape circle(50.f);
+    circle.setTexture(&texture);
+
+    sf::Vector2i local_position = sf::Mouse::getPosition(window);
+    circle.setPosition(local_position.x - 50.f, local_position.y - 50.f);
+    
+    window.draw(circle);
+    
 }
