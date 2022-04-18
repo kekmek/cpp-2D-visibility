@@ -10,7 +10,7 @@ void PixelGameEngine::StartGame() {
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
 
-    sf::RenderWindow window(sf::VideoMode(1920, 1080), "", sf::Style::Default, settings);
+    sf::RenderWindow window(sf::VideoMode(1920, 1080), "", sf::Style::Fullscreen, settings);
     
     window.setVerticalSyncEnabled(true);
     
@@ -26,6 +26,9 @@ void PixelGameEngine::StartGame() {
                     window.close();
                     break;
 
+                case sf::Event::KeyPressed :
+                    if(event.key.code == sf::Keyboard::Escape) window.close();
+                    break;
                 default:  
                     break;
             }
@@ -71,9 +74,7 @@ void PixelGameEngine::DrawRectangles(sf::RenderWindow& window, const double pos_
 }
 
 void PixelGameEngine::DrawRectangles(sf::RenderWindow& window, sf::RectangleShape& rectangle) {
-    //window.clear();
     window.draw(rectangle);
-    
 }
 
 void PixelGameEngine::DrawHero(sf::RenderWindow& window) {
