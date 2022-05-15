@@ -36,7 +36,38 @@ int main(int argc, char** argv) {
                 return 0;
             } 
         }
+        std::string name;
+        std::cout << "Enter your name:\n";
+        std::cin  >> name;
+
         socket.setBlocking(false);
+
+        std::string message = "";
+    sf::Packet  packet;
+
+    while(true)
+    {
+        std::cin >> message;
+
+        if(message != "")
+        {
+            packet.clear();
+            packet << name << message;
+
+            socket.send(packet);
+
+            message = "";
+        }
+
+        if(socket.receive(packet) == sf::Socket::Done)
+        {
+            std::string nameRec;
+            std::string messageRec;
+
+            packet    >> nameRec >> messageRec;
+            std::cout << nameRec << ": " << messageRec << '\n';
+        }
+    }
 
     }
     return 0;
