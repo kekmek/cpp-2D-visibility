@@ -6,9 +6,7 @@
 
 class NetWorkClient {
  public:
-    NetWorkClient();
-    NetWorkClient(const NetWorkClient& another) {printf("copy");}
-    NetWorkClient(const NetWorkClient&& another) {printf("move");}
+    sf::Socket::Status Init();
  private:
-    sf::IpAddress ip_;
+   
 };
