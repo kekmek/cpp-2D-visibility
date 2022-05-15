@@ -17,6 +17,7 @@ int main(int argc, char** argv) {
         sf::TcpSocket socket;
         
         if( static_cast<std::string>(argv[1]) == "Server" ) {
+            std::cout << Server.getIp() << std::endl;
             sf::TcpListener listener;
             listener.listen(2000);
 
@@ -26,11 +27,14 @@ int main(int argc, char** argv) {
             }
 
         } else if( static_cast<std::string>(argv[1]) == "Client" ) {
-           sf::Socket::Status status = socket.connect(Server.getIp(), 2000);
-           if(status != sf::Socket::Done) {
-               std::cout << "Failure to connect" << std::endl;
-               return 0;
-           } 
+            std::cout << "Enter IP Address" << std::endl;
+            std::string ip;
+            std::cin >> ip;
+            sf::Socket::Status status = socket.connect(ip, 2000);
+            if(status != sf::Socket::Done) {
+                std::cout << "Failure to connect" << std::endl;
+                return 0;
+            } 
         }
         socket.setBlocking(false);
 
