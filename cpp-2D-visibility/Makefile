@@ -3,8 +3,8 @@ CFLAGS=-c -Wall -std=c++17 -IIncludes
 
 all: game
 
-game: clean main.o Game.o Objects.o
-	$(CC) main.o Game.o Objects.o -o game -lsfml-graphics -lsfml-window -lsfml-system
+game: clean main.o Game.o Objects.o NetWorkServer.o NetWorkClient.o
+	$(CC) main.o Game.o Objects.o NetWorkClient.o NetWorkServer.o -o game -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network
 
 main.o:
 	$(CC) $(CFLAGS) main.cpp
@@ -14,6 +14,12 @@ Game.o:
 
 Objects.o:
 	$(CC) $(CFLAGS) ./Source/Objects.cpp
+
+NetWorkServer.o :
+	$(CC) $(CFLAGS) ./Source/NetWorkServer.cpp
+
+NetWorkClient.o :
+	$(CC) $(CFLAGS) ./Source/NetWorkClient.cpp
 
 clean:
 	rm -rf *.o game
