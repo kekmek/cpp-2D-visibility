@@ -5,8 +5,13 @@
 #include <SFML/Network.hpp>
 
 class NetWorkClient {
- public:
+  public:
     sf::Socket::Status Init();
- private:
-   
+    
+  private:
+    
+    unsigned short reg_port_;
+    sf::IpAddress server_ip_;
+    sf::TcpSocket reg_socket_;
+    sf::UdpSocket data_socket_;
 };
