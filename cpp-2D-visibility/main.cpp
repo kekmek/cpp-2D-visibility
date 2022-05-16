@@ -15,13 +15,14 @@ int main(int argc, char** argv) {
         
         if( static_cast<std::string>(argv[1]) == "Server" ) {
             NetWorkServer server;
-            std::cout << "Server IpAddress: ";
+            std::cout << "Server's IpAddress: ";
             std::cout << server.getIp() << std::endl;
             server.Init();
-            server.AcceptNewConnections();
+            server.ReceiveClientsRegData();
         } else if( static_cast<std::string>(argv[1]) == "Client" ) {
             NetWorkClient client;
             client.Init();
+            client.SendRegisterClientData();
         }
     }
     
