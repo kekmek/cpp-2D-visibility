@@ -19,15 +19,20 @@ class NetWorkServer {
     sf::IpAddress getIp() const;
     sf::Socket::Status Init();
     sf::Socket::Status RegisterNewClients();
+    sf::Socket::Status ReceiveAndSendData();
+    
+    ~NetWorkServer();
+
+  private:
     sf::Socket::Status AcceptNewConnections();
     sf::Socket::Status ReceiveClientsRegData();
-    ~NetWorkServer();
-  private:
+    sf::Socket::Status SendServerUdpPort(const Client& client);
+
     std::vector<Client> clients_;
     sf::TcpListener listener_;
     sf::TcpSocket reg_socket_;
     sf::IpAddress ip_;
     sf::Packet packet_;
 
-    unsigned short max_quan_clients = 2;
+    const unsigned short max_quan_clients = 2;
 };

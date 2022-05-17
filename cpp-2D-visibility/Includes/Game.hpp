@@ -1,14 +1,25 @@
 #pragma once
 #include "SFML/Graphics.hpp"
+#include "Heroes.hpp"
+#include "NetworkClient.hpp"
+#include "NetworkServer.hpp"
 
 class PixelGameEngine {
- public:
- 
-  void StartGame();
+   public:
+      PixelGameEngine();
+      void StartGame(NetWorkClient& Client);
+      ~PixelGameEngine();
+   private:
+      void DrawMap();
+      void DrawHero(const Hero& tank);
 
- private:
-  void DrawMap(sf::RenderWindow& window);
-  void DrawHero(sf::RenderWindow& window);
+      sf::Texture texture_tank_right_;
+      sf::Texture texture_tank_up_;
+      sf::Texture texture_tank_down_;
+      sf::Texture texture_tank_left_;
+
+    sf::RenderWindow* window_;
+
 };
 
 

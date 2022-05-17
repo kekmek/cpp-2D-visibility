@@ -30,7 +30,8 @@ sf::Socket::Status NetWorkClient::Init(unsigned short preferablePort) {
 }
 
 sf::Socket::Status NetWorkClient::RegisterOnServer() {
-    return SendRegisterClientData();
+    SendRegisterClientData();
+    return ReceiveServerUdpPort();
 }
 
 sf::Socket::Status NetWorkClient::SendRegisterClientData() {
@@ -44,5 +45,84 @@ sf::Socket::Status NetWorkClient::SendRegisterClientData() {
         std::cout << "Failed to send client data" << std::endl;
         return sf::Socket::Status::Error;
     }
+    packet_.clear();
     
+}
+
+sf::Socket::Status NetWorkClient::ReceiveServerUdpPort() {
+    data_socket_.setBlocking(true);
+    if(data_socket_.receive(packet_, server_ip_, server_udp_port_) == sf::Socket::Status::Done) {
+        std::string tmp;
+        packet_ >> tmp;
+        std::cout << tmp << std::endl;
+        //std::cout << server_udp_port_ << std::endl;
+        // packet_.clear();
+        // tmp.clear();
+        // tmp += "THX";
+        // packet_ << tmp;
+        // data_socket_.send(packet_, server_ip_, server_udp_port_);
+    }else {
+        std::cout << "Failure to Receive Udp Port" << std::endl;
+        return sf::Socket::Status::Error;
+    }
+    packet_.clear();
+    return sf::Socket::Status::Done;
+}
+
+sf::Socket::Status NetWorkClient::SendData(const Hero& tank) {
+    packet_.clear();
+    auto coord = tank.GetCoord();
+    packet_ << coord.first << coord.second;
+    data_socket_.setBlocking(true);
+    std::string dir;
+    switch (tank.GetDirection())
+    {
+        case Direction::UP :
+        dir = "UP";
+        break;
+    
+        case Direction::RIGHT :
+        dir = "RIGHT";
+        break;
+    
+        case Direction::LEFT :
+        dir = "LEFT";
+        break;
+    
+        case Direction::DOWN :
+        dir = "Down";
+        break;
+
+        default:
+        break;
+    }
+    packet_ << dir;
+    data_socket_.send(packet_, server_ip_, server_udp_port_);
+    packet_.clear();
+    //std::cout << "here0" << std::endl;
+    return sf::Socket::Status::Done;
+}
+
+sf::Socket::Status NetWorkClient::ReceiveData(Hero& tank_friend) {
+    data_socket_.setBlocking(false);
+    if(data_socket_.receive(packet_, server_ip_, server_udp_port_) == sf::Socket::Status::Done) {
+        std::pair<int, int> coord;
+        std::string dir;
+        packet_ >> coord.first >> coord.second >> dir;
+
+        tank_friend.SetPosition(coord);
+        if(dir == "UP") {
+            tank_friend.ChangeDirection(Direction::UP);
+        }else if(dir == "DOWN") {
+            tank_friend.ChangeDirection(Direction::DOWN);
+        }else if(dir == "RIGHT") {
+            tank_friend.ChangeDirection(Direction::RIGHT);
+        }else if(dir == "LEFT") {
+            tank_friend.ChangeDirection(Direction::LEFT);
+        }
+        std::cout << "here1" << std::endl;
+    }
+    
+    packet_.clear();
+    return sf::Socket::Status::Done;
 }
