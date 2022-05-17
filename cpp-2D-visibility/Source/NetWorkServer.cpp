@@ -27,7 +27,15 @@ sf::Socket::Status NetWorkServer::RegisterNewClients() {
     // packet_ >> buff;
     // std::cout << buff << std::endl;
     // packet_.clear();
-    return ReceiveClientsRegData();
+    ReceiveClientsRegData();
+    packet_.clear();
+    packet_ << clients_.at(1).port;
+    clients_.at(0).data_socket->send(packet_, clients_.at(0).ip, clients_.at(0).port);
+
+    packet_.clear();
+    packet_ << clients_.at(0).port;
+    clients_.at(1).data_socket->send(packet_, clients_.at(1).ip, clients_.at(1).port);
+    return sf::Socket::Status::Done;
 }
 
 sf::Socket::Status NetWorkServer::AcceptNewConnections() {

@@ -13,9 +13,13 @@ class NetWorkClient {
     sf::Socket::Status SendData(const Hero& tank);
     sf::Socket::Status ReceiveData(Hero& tank_friend);
 
+    sf::Socket::Status SendDataToOpponent(const Hero& tank);
+    sf::Socket::Status ReceiveDataFromOpponent(Hero& tank_friend);
+
   private:
     sf::Socket::Status SendRegisterClientData();
     sf::Socket::Status ReceiveServerUdpPort(); //getting udp port of Server
+    sf::Socket::Status ReceiveOpponentUdpPort();
 
     std::string name_;
 
@@ -23,6 +27,8 @@ class NetWorkClient {
 
     unsigned short reg_port_; //for TCP connection
     unsigned short server_udp_port_;
+    unsigned short opponent_udp_port_;
+    sf::IpAddress opponent_ip_;
     sf::IpAddress server_ip_;
     sf::TcpSocket reg_socket_;
     sf::UdpSocket data_socket_;

@@ -95,12 +95,12 @@ void PixelGameEngine::StartGame(NetWorkClient& Client) {
 
         }
 
-        // if(update) {
-            //Client.SendData(tank_me);
-        //     update = false;
-        // }
+        //if(update) {
+            Client.SendDataToOpponent(tank_me);
+            //update = false;
+        //}
 
-        //Client.ReceiveData(tank_friend);
+        Client.ReceiveDataFromOpponent(tank_friend);
 
         DrawHero(tank_me);
         DrawHero(tank_friend);
