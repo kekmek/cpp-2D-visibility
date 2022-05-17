@@ -73,8 +73,11 @@ sf::Socket::Status NetWorkClient::ReceiveServerUdpPort() {
 sf::Socket::Status NetWorkClient::ReceiveOpponentUdpPort() {
     data_socket_.setBlocking(true);
     if(data_socket_.receive(packet_, server_ip_, server_udp_port_) == sf::Socket::Status::Done) {
-        packet_ >> opponent_udp_port_;
+        std::string tmp;
+        packet_ >> opponent_udp_port_ >> tmp;
+        opponent_ip_ = sf::IpAddress(tmp);
         std::cout << opponent_udp_port_ << std::endl;
+        std::cout << opponent_ip_ << std::endl;
     }else {
         std::cout << "Failure to Receive Udp Port" << std::endl;
         return sf::Socket::Status::Error;
@@ -169,7 +172,7 @@ sf::Socket::Status NetWorkClient::SendDataToOpponent(const Hero& tank) {
         break;
     }
     packet_ << dir;
-    data_socket_.send(packet_, "192.168.1.199", opponent_udp_port_);
+    data_socket_.send(packet_, opponent_ip_, opponent_udp_port_);
     packet_.clear();
     return sf::Socket::Status::Done;
 }

@@ -28,6 +28,7 @@ class NetWorkClient {
     unsigned short reg_port_; //for TCP connection
     unsigned short server_udp_port_;
     unsigned short opponent_udp_port_;
+
     sf::IpAddress opponent_ip_;
     sf::IpAddress server_ip_;
     sf::TcpSocket reg_socket_;

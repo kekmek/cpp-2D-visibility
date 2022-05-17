@@ -102,8 +102,8 @@ void PixelGameEngine::StartGame(NetWorkClient& Client) {
 
         Client.ReceiveDataFromOpponent(tank_friend);
 
-        DrawHero(tank_me);
-        DrawHero(tank_friend);
+        DrawHero(tank_me, true);
+        DrawHero(tank_friend, false);
         window_->display();
         window_->clear();
     }
@@ -114,7 +114,7 @@ void PixelGameEngine::DrawMap() {
     
 }
 
-void PixelGameEngine::DrawHero(const Hero& tank) {
+void PixelGameEngine::DrawHero(const Hero& tank, bool me) {
     sf::RectangleShape rectangle(sf::Vector2f(70, 70));
 
     switch (tank.GetDirection()) {
@@ -139,6 +139,7 @@ void PixelGameEngine::DrawHero(const Hero& tank) {
     }
     auto coord = tank.GetCoord();
     rectangle.setPosition(sf::Vector2f(coord.first * 70, coord.second * 70));
+    if(!me) rectangle.setOutlineColor(sf::Color::Red);
     window_->draw(rectangle);
     
 }

@@ -11,7 +11,7 @@ class PixelGameEngine {
       ~PixelGameEngine();
    private:
       void DrawMap();
-      void DrawHero(const Hero& tank);
+      void DrawHero(const Hero& tank, bool me);
 
       sf::Texture texture_tank_right_;
       sf::Texture texture_tank_up_;

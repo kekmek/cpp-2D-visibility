@@ -29,11 +29,11 @@ sf::Socket::Status NetWorkServer::RegisterNewClients() {
     // packet_.clear();
     ReceiveClientsRegData();
     packet_.clear();
-    packet_ << clients_.at(1).port;
+    packet_ << clients_.at(1).port << clients_.at(1).ip.toString();
     clients_.at(0).data_socket->send(packet_, clients_.at(0).ip, clients_.at(0).port);
 
     packet_.clear();
-    packet_ << clients_.at(0).port;
+    packet_ << clients_.at(0).port << clients_.at(0).ip.toString();
     clients_.at(1).data_socket->send(packet_, clients_.at(1).ip, clients_.at(1).port);
     return sf::Socket::Status::Done;
 }
